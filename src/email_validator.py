@@ -33,8 +33,8 @@ def validate_email(email: str) -> bool:
         return False
     
     # Validate domain
-    # Check for consecutive dots
-    if '..' in domain:
+    # Check for consecutive dots or starting with a dot
+    if '..' in domain or domain.startswith('.'):
         return False
     
     # Option 1: Check against valid IP addresses
@@ -46,5 +46,5 @@ def validate_email(email: str) -> bool:
     
     # Option 2: Regular domain validation
     # Matches domain with at least one dot and valid top-level domain
-    domain_regex = r'^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    domain_regex = r'^[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     return bool(re.match(domain_regex, domain))
