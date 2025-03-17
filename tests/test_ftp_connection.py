@@ -40,48 +40,40 @@ def test_missing_parameters():
     assert connection is None
     assert "Missing required connection parameters" in error
 
-def test_invalid_connection_parameters():
-    # This test simulates a connection failure
-    def mock_connect(*args, **kwargs):
-        raise ftplib.error_perm("Invalid connection parameters")
-    
+def test_invalid_connection_parameters(monkeypatch):
+    # Test connection failure
     class MockFailedFTP:
         def __init__(self, timeout=None):
             pass
         def connect(self, host, port):
             raise ftplib.error_perm("Invalid connection parameters")
     
-    with pytest.monkeypatch.context() as m:
-        m.setattr(ftplib, 'FTP', MockFailedFTP)
+    monkeypatch.setattr(ftplib, 'FTP', MockFailedFTP)
         
-        connection, error = establish_ftp_connection(
-            host='invalid.host', 
-            username='baduser', 
-            password='badpass'
-        )
+    connection, error = establish_ftp_connection(
+        host='invalid.host', 
+        username='baduser', 
+        password='badpass'
+    )
         
-        assert connection is None
-        assert "FTP Connection Error" in error
+    assert connection is None
+    assert "FTP Connection Error" in error
 
-def test_connection_timeout():
+def test_connection_timeout(monkeypatch):
     # Simulate a timeout scenario
-    def mock_connect(*args, **kwargs):
-        raise TimeoutError("Connection timed out")
-    
     class MockTimeoutFTP:
         def __init__(self, timeout=None):
             pass
         def connect(self, host, port):
             raise TimeoutError("Connection timed out")
     
-    with pytest.monkeypatch.context() as m:
-        m.setattr(ftplib, 'FTP', MockTimeoutFTP)
+    monkeypatch.setattr(ftplib, 'FTP', MockTimeoutFTP)
         
-        connection, error = establish_ftp_connection(
-            host='slow.example.com', 
-            username='timeoutuser', 
-            password='timeoutpass'
-        )
+    connection, error = establish_ftp_connection(
+        host='slow.example.com', 
+        username='timeoutuser', 
+        password='timeoutpass'
+    )
         
-        assert connection is None
-        assert "Unexpected Error" in error
+    assert connection is None
+    assert "Unexpected Error" in error
