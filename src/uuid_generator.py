@@ -23,11 +23,11 @@ def generate_uuid():
     
     # Create UUID in standard format
     uuid_parts = [
-        hash_hex[:8],        # 8 chars
-        hash_hex[8:12],      # 4 chars
-        f"4{hash_hex[12:15]}",  # Version 4 UUID starts with '4'
-        f"{hex(int(hash_hex[15:18], 16) & 0x3 | 0x8)[2:]}",  # variant bits
-        hash_hex[18:30]      # 12 chars
+        hash_hex[:8],                 # 8 chars
+        hash_hex[8:12],               # 4 chars
+        f"4{hash_hex[12:15]}",         # Version 4 UUID starts with '4'
+        f"{hex(int(hash_hex[15:18], 16) & 0x3 | 0x8)[2:].zfill(4)}", # variant bits, ensure 4 chars
+        hash_hex[18:30]               # 12 chars
     ]
     
     return '-'.join(uuid_parts)
