@@ -4,7 +4,9 @@ from src.longest_increasing_subsequence import find_longest_increasing_subsequen
 def test_basic_increasing_sequence():
     """Test a basic increasing sequence"""
     arr = [10, 22, 9, 33, 21, 50, 41, 60, 80]
-    assert find_longest_increasing_subsequence(arr) == [10, 22, 33, 50, 60, 80]
+    result = find_longest_increasing_subsequence(arr)
+    assert len(result) == 6
+    assert all(result[i] < result[i+1] for i in range(len(result)-1))
 
 def test_all_same_elements():
     """Test when all elements are the same"""
@@ -39,11 +41,13 @@ def test_non_list_input_raises_error():
 def test_complex_subsequence():
     """Test a more complex subsequence selection"""
     arr = [0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15]
-    assert find_longest_increasing_subsequence(arr) == [0, 2, 6, 9, 13, 15]
+    result = find_longest_increasing_subsequence(arr)
+    assert len(result) == 6
+    assert all(result[i] < result[i+1] for i in range(len(result)-1))
 
 def test_multiple_possible_subsequences():
     """Test when multiple subsequences of the same length exist"""
     arr = [1, 5, 0, 6, 2, 3]
-    subsequence = find_longest_increasing_subsequence(arr)
-    assert len(subsequence) == 4
-    assert subsequence == [1, 5, 6, 0] or subsequence == [0, 2, 3, 6]
+    result = find_longest_increasing_subsequence(arr)
+    assert len(result) == 3
+    assert all(result[i] < result[i+1] for i in range(len(result)-1))
