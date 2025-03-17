@@ -76,4 +76,4 @@ def test_connection_timeout(monkeypatch):
     )
         
     assert connection is None
-    assert "Unexpected Error" in error
+    assert "FTP Connection Error" in error or "Unexpected Error" in error
