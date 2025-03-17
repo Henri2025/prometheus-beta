@@ -32,6 +32,11 @@ def validate_email(email: str) -> bool:
     if not username or len(username) > 64:
         return False
     
+    # Validate username format (allow dots, plus, hyphens)
+    username_regex = r'^[a-zA-Z0-9._%+-]+$'
+    if not re.match(username_regex, username):
+        return False
+    
     # Validate domain
     # Check for consecutive dots or starting with a dot
     if '..' in domain or domain.startswith('.'):
@@ -45,6 +50,6 @@ def validate_email(email: str) -> bool:
         pass
     
     # Option 2: Regular domain validation
-    # Matches domain with at least one dot and valid top-level domain
-    domain_regex = r'^[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    # More lenient regex to allow subdomains and various formats
+    domain_regex = r'^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$'
     return bool(re.match(domain_regex, domain))
