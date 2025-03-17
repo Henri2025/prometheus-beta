@@ -16,17 +16,20 @@ def is_website_online(url: str, timeout: float = 5.0) -> bool:
     Raises:
         ValueError: If the provided URL is invalid.
     """
-    # Validate URL
+    # Validate and repair URL
     try:
         parsed_url = urllib.parse.urlparse(url)
-        if not parsed_url.scheme or not parsed_url.netloc:
+        
+        # If no scheme, add https
+        if not parsed_url.scheme:
+            url = f"https://{url}"
+            parsed_url = urllib.parse.urlparse(url)
+        
+        # Check if netloc exists
+        if not parsed_url.netloc:
             raise ValueError("Invalid URL format")
     except Exception:
         raise ValueError("Invalid URL format")
-
-    # Ensure URL has a scheme
-    if not parsed_url.scheme:
-        url = f"https://{url}"
 
     try:
         # Attempt to get the website with a timeout
