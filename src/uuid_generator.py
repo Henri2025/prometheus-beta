@@ -26,7 +26,7 @@ def generate_uuid():
         hash_hex[:8],                 # 8 chars
         hash_hex[8:12],               # 4 chars
         f"4{hash_hex[12:15]}",         # Version 4 UUID starts with '4'
-        f"{hex(int(hash_hex[15:18], 16) & 0x3 | 0x8)[2:].zfill(4)}", # variant bits, ensure 4 chars
+        f"8{hash_hex[15:18]}",         # Variant 8 (starts with 8, 9, a, or b)
         hash_hex[18:30]               # 12 chars
     ]
     
