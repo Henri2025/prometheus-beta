@@ -39,7 +39,7 @@ def find_longest_increasing_subsequence(arr):
     
     # Track the maximum length and its index
     max_length = 1
-    max_length_index = 0
+    max_length_indices = [0]
     
     # Find the longest increasing subsequence
     for i in range(1, n):
@@ -48,10 +48,15 @@ def find_longest_increasing_subsequence(arr):
                 dp[i] = dp[j] + 1
                 prev_index[i] = j
         
-        # Update max_length and max_length_index
+        # Update max_length and indices
         if dp[i] > max_length:
             max_length = dp[i]
-            max_length_index = i
+            max_length_indices = [i]
+        elif dp[i] == max_length:
+            max_length_indices.append(i)
+    
+    # Choose the lexicographically first subsequence among those with max length
+    max_length_index = min(max_length_indices)
     
     # Reconstruct the subsequence
     subsequence = []
