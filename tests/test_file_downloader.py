@@ -4,17 +4,13 @@ import requests
 import tempfile
 from src.file_downloader import download_file
 
-@pytest.fixture
-def mock_requests(requests_mock):
-    return requests_mock
-
-def test_download_file_with_default_save_path(mock_requests):
+def test_download_file_with_default_save_path(requests_mock):
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
         # Mock the response
         mock_content = b'Test file content'
         mock_url = 'https://example.com/testfile.txt'
-        mock_requests.get(mock_url, content=mock_content)
+        requests_mock.get(mock_url, content=mock_content)
 
         # Change current working directory to temp directory
         original_cwd = os.getcwd()
@@ -35,7 +31,7 @@ def test_download_file_with_default_save_path(mock_requests):
             # Restore original working directory
             os.chdir(original_cwd)
 
-def test_download_file_with_custom_save_path(mock_requests):
+def test_download_file_with_custom_save_path(requests_mock):
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
         # Construct custom save path
@@ -44,7 +40,7 @@ def test_download_file_with_custom_save_path(mock_requests):
         # Mock the response
         mock_content = b'Custom file content'
         mock_url = 'https://example.com/customfile.txt'
-        mock_requests.get(mock_url, content=mock_content)
+        requests_mock.get(mock_url, content=mock_content)
 
         # Download the file
         saved_path = download_file(mock_url, custom_path)
@@ -66,15 +62,15 @@ def test_download_file_invalid_url():
     with pytest.raises(ValueError, match="Invalid URL"):
         download_file(None)
 
-def test_download_file_network_error(mock_requests):
+def test_download_file_network_error(requests_mock):
     # Simulate network error
     mock_url = 'https://example.com/nonexistent'
-    mock_requests.get(mock_url, status_code=404)
+    requests_mock.get(mock_url, status_code=404)
 
     with pytest.raises(requests.RequestException):
         download_file(mock_url)
 
-def test_download_file_directory_creation(mock_requests):
+def test_download_file_directory_creation(requests_mock):
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
         # Construct path in a nested directory that doesn't exist
@@ -83,7 +79,7 @@ def test_download_file_directory_creation(mock_requests):
         # Mock the response
         mock_content = b'Directory creation test'
         mock_url = 'https://example.com/testfile.txt'
-        mock_requests.get(mock_url, content=mock_content)
+        requests_mock.get(mock_url, content=mock_content)
 
         # Download the file
         saved_path = download_file(mock_url, custom_path)
