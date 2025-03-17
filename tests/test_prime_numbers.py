@@ -34,5 +34,5 @@ def test_large_input():
     primes = get_primes_to_n(1000)
     # Check first few and last few primes
     assert primes[:5] == [2, 3, 5, 7, 11]
-    assert primes[-5:] == [937, 941, 947, 953, 967]
+    assert primes[-5:] == [971, 977, 983, 991, 997]
     assert len(primes) == 168  # Number of primes <= 1000
