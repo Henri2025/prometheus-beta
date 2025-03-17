@@ -1,4 +1,5 @@
 import pytest
+import smtplib
 from src.smtp_email_sender import send_email
 
 def test_send_email_invalid_inputs():
