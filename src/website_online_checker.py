@@ -1,6 +1,7 @@
 import requests
 import socket
 import urllib.parse
+import re
 
 def is_website_online(url: str, timeout: float = 5.0) -> bool:
     """
@@ -16,17 +17,19 @@ def is_website_online(url: str, timeout: float = 5.0) -> bool:
     Raises:
         ValueError: If the provided URL is invalid.
     """
-    # Validate and repair URL
+    # Validate URL
+    if not url or len(url.strip()) == 0:
+        raise ValueError("Invalid URL format")
+
+    # Add scheme if missing
+    if not re.match(r'^https?://', url):
+        url = f"https://{url}"
+
     try:
         parsed_url = urllib.parse.urlparse(url)
         
-        # If no scheme, add https
-        if not parsed_url.scheme:
-            url = f"https://{url}"
-            parsed_url = urllib.parse.urlparse(url)
-        
-        # Check if netloc exists
-        if not parsed_url.netloc:
+        # Validate netloc using a stricter regex
+        if not re.match(r'^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', parsed_url.netloc):
             raise ValueError("Invalid URL format")
     except Exception:
         raise ValueError("Invalid URL format")
