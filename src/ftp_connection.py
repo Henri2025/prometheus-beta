@@ -37,8 +37,8 @@ def establish_ftp_connection(
         
         return ftp, None
     
-    except ftplib.all_errors as e:
-        # Catch and handle various FTP-related errors
+    except (ftplib.error_perm, ftplib.error_temp, TimeoutError) as e:
+        # Catch and handle FTP-related errors and timeouts
         return None, f"FTP Connection Error: {str(e)}"
     except Exception as e:
         # Catch any unexpected errors
