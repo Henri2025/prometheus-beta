@@ -14,7 +14,12 @@ def calculate_timestamp_difference(timestamp1: str, timestamp2: str, format: str
 
     Raises:
         ValueError: If timestamps cannot be parsed or have invalid format
+        AttributeError: If input is not a string
     """
+    # Validate input type first
+    if not isinstance(timestamp1, str) or not isinstance(timestamp2, str):
+        raise AttributeError("Timestamps must be strings")
+    
     try:
         dt1 = datetime.strptime(timestamp1, format)
         dt2 = datetime.strptime(timestamp2, format)
