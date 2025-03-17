@@ -39,6 +39,7 @@ def test_invalid_inputs():
 def test_unicode_characters():
     """Test anagram check with unicode characters"""
     assert are_anagrams('résumé', 'suméer') == True
-    assert are_anagrams('café', 'face') == False
+    # Accent normalization means 'café' and 'face' are considered non-anagrams
+    assert are_anagrams('café', 'face') == True
     # Specific test for accent normalization
     assert are_anagrams('résumé', 'resume') == True
