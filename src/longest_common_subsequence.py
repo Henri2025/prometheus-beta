@@ -20,6 +20,10 @@ def longest_common_subsequence(str1, str2):
     if not isinstance(str1, str) or not isinstance(str2, str):
         raise TypeError("Inputs must be strings")
     
+    # Convert to lowercase for case-insensitive comparison
+    str1 = str1.lower()
+    str2 = str2.lower()
+    
     # If either string is empty, return empty string
     if not str1 or not str2:
         return ""
